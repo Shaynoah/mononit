@@ -7,6 +7,15 @@ const ProtectSection = () => {
   const sectionRef = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
 
+  // Preload images immediately for faster rendering
+  useEffect(() => {
+    const images = [protectImage1, protectImage2, protectImage3]
+    images.forEach((imageSrc) => {
+      const img = new Image()
+      img.src = imageSrc
+    })
+  }, [])
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -74,15 +83,33 @@ const ProtectSection = () => {
           
           <div className="protect-images">
             <div className="protect-image-card image-card-1">
-              <img src={protectImage1} alt="Protection" />
+              <img 
+                src={protectImage1} 
+                alt="Protection" 
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
               <div className="image-overlay"></div>
             </div>
             <div className="protect-image-card image-card-2">
-              <img src={protectImage2} alt="Security" />
+              <img 
+                src={protectImage2} 
+                alt="Security" 
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
               <div className="image-overlay"></div>
             </div>
             <div className="protect-image-card image-card-3">
-              <img src={protectImage3} alt="Care" />
+              <img 
+                src={protectImage3} 
+                alt="Care" 
+                loading="eager"
+                decoding="async"
+                fetchpriority="high"
+              />
               <div className="image-overlay"></div>
             </div>
           </div>

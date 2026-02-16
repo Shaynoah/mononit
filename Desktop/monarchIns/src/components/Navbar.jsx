@@ -231,24 +231,33 @@ const Navbar = () => {
 
   // Handle scroll
   useEffect(() => {
+    let ticking = false
+    
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-      
-      const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean)
-      const scrollY = window.pageYOffset
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 50)
+          
+          const sections = navItems.map(item => document.getElementById(item.id)).filter(Boolean)
+          const scrollY = window.pageYOffset
 
-      sections.forEach(section => {
-        const sectionHeight = section.offsetHeight
-        const sectionTop = section.offsetTop - 100
-        const sectionId = section.getAttribute('id')
+          sections.forEach(section => {
+            const sectionHeight = section.offsetHeight
+            const sectionTop = section.offsetTop - 100
+            const sectionId = section.getAttribute('id')
 
-        if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-          setActiveSection(sectionId)
-        }
-      })
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+              setActiveSection(sectionId)
+            }
+          })
+          
+          ticking = false
+        })
+        ticking = true
+      }
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
@@ -408,7 +417,14 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="nav-logo" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <div className="logo-wrapper">
-            <img src={logoImage} alt="Monarch Insurance Logo" className="logo-image" />
+            <img 
+              src={logoImage} 
+              alt="Monarch Insurance Logo" 
+              className="logo-image"
+              loading="eager"
+              decoding="async"
+              fetchpriority="high"
+            />
             <div className="logo-glow"></div>
             <div className="logo-shine"></div>
           </div>

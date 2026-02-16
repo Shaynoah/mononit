@@ -13,6 +13,14 @@ const Hero = () => {
   
   const heroImages = [heroBgImage1, heroBgImage2, heroBgImage3]
   
+  // Preload all hero images immediately for faster rendering
+  useEffect(() => {
+    heroImages.forEach((imageSrc) => {
+      const img = new Image()
+      img.src = imageSrc
+    })
+  }, [])
+  
   // Determine if current background is light (white/light colored)
   // Image 2 (index 1) is the healthcare one which appears to be lighter
   useEffect(() => {
@@ -29,26 +37,35 @@ const Hero = () => {
   }, [heroImages.length])
 
   useEffect(() => {
+    let ticking = false
+    
     const handleScroll = () => {
-      const scrolled = window.pageYOffset
-      const heroHeight = heroRef.current ? heroRef.current.offsetHeight : 0
-      
-      // Parallax effect for background image
-      if (bgImageRef.current && scrolled < heroHeight) {
-        const parallaxSpeed = 0.2
-        bgImageRef.current.style.transform = `translateY(${scrolled * parallaxSpeed}px)`
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrolled = window.pageYOffset
+          const heroHeight = heroRef.current ? heroRef.current.offsetHeight : 0
+          
+          // Parallax effect for background image
+          if (bgImageRef.current && scrolled < heroHeight) {
+            const parallaxSpeed = 0.2
+            bgImageRef.current.style.transform = `translate3d(0, ${scrolled * parallaxSpeed}px, 0)`
+          }
+          
+          // Floating shapes parallax
+          shapeRefs.forEach((ref, index) => {
+            if (ref.current) {
+              const speed = 0.5 + (index * 0.1)
+              ref.current.style.transform = `translate3d(0, ${scrolled * speed}px, 0)`
+            }
+          })
+          
+          ticking = false
+        })
+        ticking = true
       }
-      
-      // Floating shapes parallax
-      shapeRefs.forEach((ref, index) => {
-        if (ref.current) {
-          const speed = 0.5 + (index * 0.1)
-          ref.current.style.transform = `translateY(${scrolled * speed}px)`
-        }
-      })
     }
 
-    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 

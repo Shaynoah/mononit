@@ -188,7 +188,13 @@ const Team = () => {
                   onClick={() => openModal(member)}
                 >
                   {member.image ? (
-                    <img src={member.image} alt={member.name} className="team-member-image" />
+                    <img 
+                      src={member.image} 
+                      alt={member.name} 
+                      className="team-member-image"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   ) : (
                     <div className="team-image-placeholder">
                       <span className="placeholder-icon">👤</span>
@@ -222,7 +228,13 @@ const Team = () => {
             <div className="team-modal-content">
               <div className="team-modal-image-section">
                 {selectedMember.image ? (
-                  <img src={selectedMember.image} alt={selectedMember.name} className="team-modal-image" />
+                  <img 
+                    src={selectedMember.image} 
+                    alt={selectedMember.name} 
+                    className="team-modal-image"
+                    loading="eager"
+                    decoding="async"
+                  />
                 ) : (
                   <div className="team-modal-image-placeholder">
                     <span className="modal-placeholder-icon">👤</span>

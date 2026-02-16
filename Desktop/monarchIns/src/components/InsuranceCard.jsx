@@ -43,7 +43,14 @@ const InsuranceCard = ({ image, title, description, onClick }) => {
     >
       {image && (
         <div className="card-image-wrapper">
-          <img src={image} alt={title} className="card-image" />
+          <img 
+            src={image} 
+            alt={title} 
+            className="card-image"
+            loading="eager"
+            decoding="async"
+            fetchpriority="high"
+          />
           <div className="card-image-overlay"></div>
         </div>
       )}

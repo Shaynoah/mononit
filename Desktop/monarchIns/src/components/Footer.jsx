@@ -84,7 +84,13 @@ const Footer = () => {
           <div className="footer-section">
             <div className="footer-logo">
               <div className="footer-logo-wrapper">
-                <img src={logoImage} alt="Monarch Insurance Logo" className="footer-logo-image" />
+                <img 
+                  src={logoImage} 
+                  alt="Monarch Insurance Logo" 
+                  className="footer-logo-image"
+                  loading="eager"
+                  decoding="async"
+                />
               </div>
             </div>
             <p>Protecting what matters most with comprehensive insurance solutions.</p>

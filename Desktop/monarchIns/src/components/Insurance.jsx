@@ -24,6 +24,15 @@ const Insurance = () => {
     }
   ]
 
+  // Preload insurance images immediately
+  useEffect(() => {
+    const images = [lifeInsuranceImage, generalInsuranceImage]
+    images.forEach((imageSrc) => {
+      const img = new Image()
+      img.src = imageSrc
+    })
+  }, [])
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {

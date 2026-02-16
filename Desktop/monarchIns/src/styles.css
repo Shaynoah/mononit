@@ -26,10 +26,13 @@
 
 html {
     scroll-behavior: smooth;
+    scroll-padding-top: 80px;
     display: block;
     visibility: visible;
     width: 100%;
     height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -41,6 +44,94 @@ body {
     display: block;
     visibility: visible;
     opacity: 1;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    scroll-margin-top: 80px;
+}
+
+/* Optimize scrolling performance */
+.hero,
+.hero-background,
+.hero-content,
+.navbar,
+.section {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}
+
+/* Reduce repaints during scroll */
+.hero-background-image,
+.shape,
+.navbar {
+    contain: layout style paint;
+}
+
+/* Image rendering optimizations for smooth scrolling */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    -ms-interpolation-mode: bicubic;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform, opacity;
+    content-visibility: auto;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Prevent layout shifts from images */
+img[loading="lazy"] {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 400px;
+}
+
+/* Optimize specific image types */
+.card-image,
+.team-member-image,
+.team-modal-image,
+.protect-image-card img,
+.logo-image,
+.footer-logo-image {
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+}
+
+/* Optimize image containers */
+.card-image-wrapper,
+.team-image-wrapper,
+.protect-image-card {
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* Content visibility for sections to improve scroll performance */
+.protect-section,
+.insurance-section,
+.reviews-section,
+.why-choose-us-section,
+.cta-section,
+.team-section,
+.about-section-modern {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
 }
 
 #root {
@@ -64,6 +155,9 @@ body {
     position: fixed;
     top: 0;
     left: 0;
+    will-change: transform, background-color;
+    transform: translateZ(0);
+    backface-visibility: hidden;
     right: 0;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.95);
@@ -172,10 +266,14 @@ body {
     filter: drop-shadow(0 2px 8px rgba(17, 66, 46, 0.15));
     opacity: 1;
     visibility: visible;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .nav-logo:hover .logo-image {
-    transform: scale(1.08) translateY(-2px);
+    transform: translate3d(0, -2px, 0) scale(1.08);
     filter: drop-shadow(0 4px 16px rgba(17, 66, 46, 0.25));
 }
 
@@ -1376,14 +1474,21 @@ body {
     z-index: 0;
     filter: brightness(1.1) contrast(1.05) saturate(1.1);
     will-change: transform, opacity;
-    transition: transform 0.1s ease-out, opacity 1.5s ease-in-out;
+    transition: transform 0.1s ease-out, opacity 0.8s ease-in-out;
     opacity: 0;
     animation: heroImageMotion 30s ease-in-out infinite;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 1000px;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
 }
 
 .hero-background-image.active {
     opacity: 1;
     z-index: 1;
+    transition: opacity 0.3s ease-in-out;
 }
 
 @media (max-width: 968px) {
@@ -1531,6 +1636,10 @@ body {
     animation: float 20s infinite ease-in-out;
     mix-blend-mode: soft-light;
     filter: blur(1px);
+    will-change: transform;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .shape-1 {
@@ -1561,9 +1670,9 @@ body {
 }
 
 @keyframes float {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    33% { transform: translate(30px, -30px) rotate(120deg); }
-    66% { transform: translate(-20px, 20px) rotate(240deg); }
+    0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+    33% { transform: translate3d(30px, -30px, 0) rotate(120deg); }
+    66% { transform: translate3d(-20px, 20px, 0) rotate(240deg); }
 }
 
 .hero-content {
@@ -2393,10 +2502,17 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.5s ease;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    content-visibility: auto;
 }
 
 .protect-image-card:hover img {
-    transform: scale(1.1);
+    transform: translate3d(0, 0, 0) scale(1.1);
 }
 
 .image-overlay {
@@ -3359,10 +3475,17 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: optimize-contrast;
+    content-visibility: auto;
 }
 
 .insurance-card:hover .card-image {
-    transform: scale(1.1);
+    transform: translate3d(0, 0, 0) scale(1.1);
 }
 
 .card-image-overlay {
@@ -3743,6 +3866,8 @@ body {
     box-shadow: 0 4px 20px rgba(37, 211, 102, 0.3);
     border: 2px solid transparent;
     transition: all 0.3s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 @keyframes whatsappBannerPulse {
@@ -4732,16 +4857,22 @@ body {
     }
 
     .whatsapp-banner {
-        padding: 14px 20px;
-        font-size: 0.95rem;
-        margin-bottom: 20px;
-        flex-wrap: wrap;
-        gap: 12px;
+        padding: 0.875rem 1.5rem;
+        font-size: 0.875rem;
+        margin-bottom: 0;
+        flex-wrap: nowrap;
+        gap: 0.75rem;
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+        text-align: center;
+        min-width: 0;
     }
 
     .whatsapp-icon-wrapper {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
+        flex-shrink: 0;
     }
 
     .whatsapp-icon-wrapper svg {
@@ -4750,19 +4881,26 @@ body {
     }
 
     .whatsapp-banner-text {
-        font-size: 0.95rem;
+        font-size: 0.875rem;
         flex: 1;
-        min-width: 200px;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        text-align: center;
+        line-height: 1.2;
+        letter-spacing: 0.5px;
     }
 
     .whatsapp-arrow {
-        width: 26px;
-        height: 26px;
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
     }
 
     .whatsapp-arrow svg {
-        width: 14px;
-        height: 14px;
+        width: 16px;
+        height: 16px;
     }
 
     .hero {
@@ -4818,40 +4956,77 @@ body {
 
     .hero-buttons {
         justify-content: center;
-        gap: 0.5rem;
+        gap: 0.75rem;
         margin-top: 0;
         flex-wrap: wrap;
+        flex-direction: column;
         width: 100%;
     }
 
     .btn-get-quote {
         padding: 0.875rem 1.5rem;
         font-size: 0.875rem;
-        flex: 1;
-        min-width: 140px;
-        max-width: calc(50% - 0.25rem);
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+    }
+
+    .hero-whatsapp-banner {
+        width: 100%;
+        max-width: 100%;
     }
 
     .whatsapp-banner {
         padding: 0.875rem 1.5rem;
         font-size: 0.875rem;
+        width: 100%;
+        max-width: 100%;
+        gap: 0.75rem;
+        flex-wrap: nowrap;
+        justify-content: center;
+    }
+    
+    .whatsapp-banner-text {
+        font-size: 0.875rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
         flex: 1;
-        min-width: 140px;
-        max-width: calc(50% - 0.25rem);
+        min-width: 0;
+        line-height: 1.2;
+        letter-spacing: 0.5px;
     }
 
     .whatsapp-banner-text {
-        font-size: 0.875rem;
+        font-size: 0.6rem;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+        flex: 1;
+        min-width: 0;
+        line-height: 1.2;
+    }
+
+    .whatsapp-icon-wrapper {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
     }
 
     .whatsapp-icon-wrapper svg {
-        width: 18px;
-        height: 18px;
+        width: 12px;
+        height: 12px;
+    }
+
+    .whatsapp-arrow {
+        width: 14px;
+        height: 14px;
+        flex-shrink: 0;
     }
 
     .whatsapp-arrow svg {
-        width: 16px;
-        height: 16px;
+        width: 10px;
+        height: 10px;
     }
 
     .btn-get-quote svg {
@@ -6609,10 +6784,14 @@ body {
     opacity: 1;
     display: block;
     max-width: 180px;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .footer-logo:hover .footer-logo-image {
-    transform: scale(1.08) translateY(-2px);
+    transform: translate3d(0, -2px, 0) scale(1.08);
     filter: drop-shadow(0 6px 20px rgba(255, 255, 255, 0.4));
     opacity: 1;
 }
@@ -10640,6 +10819,10 @@ body {
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .team-image-placeholder {
@@ -10864,6 +11047,10 @@ body {
     object-fit: cover;
     border-radius: 12px;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    transform: translate3d(0, 0, 0);
+    will-change: transform;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .team-modal-image-placeholder {
