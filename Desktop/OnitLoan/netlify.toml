@@ -1,6 +1,5 @@
 [build]
-  publish = "Desktop/OnitLoan/frontend"
-  command = "echo 'No build step required for static site'"
+  publish = "frontend"
 
 [[redirects]]
   from = "/"
