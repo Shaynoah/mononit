@@ -1,16 +1,7 @@
 [build]
-  command = "echo 'Static site'"
   publish = "frontend"
 
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
-
-[context.production]
-  command = "echo 'Production build'"
-
-[headers]
-  [[headers.values]]
-    key = "Cache-Control"
-    value = "public, max-age=3600, s-maxage=3600"
